@@ -1,0 +1,10 @@
+h1{
+    color: #fff;
+    font-size: 80px;
+    text-align: center;
+}
+.log-out{
+    width: 100%;
+    max-width: fit-content;
+    padding: 8px 16px;
+}

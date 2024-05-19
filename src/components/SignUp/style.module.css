@@ -1,12 +1,13 @@
-.login {
+.signUp {
   padding: 15px;
 }
-.login form {
+
+.signUp form {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 }
 
-.login input {
+.signUp input {
   width: 350px;
 }
