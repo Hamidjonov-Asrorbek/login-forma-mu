@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { login } from "./style.module.css";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -18,6 +20,7 @@ function Login() {
     if (status) {
       const user = users.filter(({ email }) => email === userInfo.email)[0];
       localStorage.setItem("user", JSON.stringify(user));
+      navigate("/layout");
     }
   };
   return (
@@ -37,6 +40,7 @@ function Login() {
           id="outlined-basic"
           label="Password"
           variant="outlined"
+          required
           value={userInfo.password}
           onChange={(e) =>
             setUserInfo({ ...userInfo, password: e.target.value })

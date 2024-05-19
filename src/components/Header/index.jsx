@@ -40,6 +40,8 @@ function Header() {
     localStorage.setItem("user", JSON.stringify(false));
     navigate("/");
   }
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user);
 
   return (
     <AppBar position="static">
@@ -134,7 +136,7 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={user.name} src={user.avatar} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -154,7 +156,10 @@ function Header() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={setting === "Log out" ? LogOut : handleCloseUserMenu}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

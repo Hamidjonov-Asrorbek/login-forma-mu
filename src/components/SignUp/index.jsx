@@ -1,8 +1,10 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { signUp } from "./style.module.css";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     name: "",
     avatar: "",
@@ -31,6 +33,8 @@ function SignUp() {
       });
       const data = await req.json();
       localStorage.setItem("users", JSON.stringify([...users, data]));
+
+      navigate("/layout");
 
       localStorage.setItem("user", JSON.stringify(data));
       console.log(data);
