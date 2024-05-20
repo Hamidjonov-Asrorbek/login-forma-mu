@@ -11,8 +11,29 @@ function Login() {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const errors = {};
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(userInfo.email)) {
+      errors.email = "Email is not valid";
+    }
+    if (userInfo.password.length < 6) {
+      errors.password = "Password must be at least 6 characters long";
+    }
+
+    return errors;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
     const users = JSON.parse(localStorage.getItem("users"));
     setUserInfo((...prev) => ({ ...prev, email: "", password: "" }));
     const status = users.some(
@@ -23,8 +44,11 @@ function Login() {
       const user = users.filter(({ email }) => email === userInfo.email)[0];
       localStorage.setItem("user", JSON.stringify(user));
       navigate("/layout");
+    } else {
+      setErrors({ general: "Invalid email or password" });
     }
   };
+
   return (
     <div className={login}>
       <form onSubmit={handleSubmit}>
@@ -36,6 +60,8 @@ function Login() {
           required
           value={userInfo.email}
           onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+          error={!!errors.email}
+          helperText={errors.email}
         />
         <div className={passShow}>
           <TextField
@@ -48,6 +74,8 @@ function Login() {
             onChange={(e) =>
               setUserInfo({ ...userInfo, password: e.target.value })
             }
+            error={!!errors.password}
+            helperText={errors.password}
           />
           {showPassword ? (
             <FaEye
@@ -61,6 +89,7 @@ function Login() {
             />
           )}
         </div>
+        {errors.general && <p style={{ color: "red" }}>{errors.general}</p>}
         <Button type="submit" variant="contained">
           Submit
         </Button>

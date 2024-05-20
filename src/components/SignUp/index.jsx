@@ -1,5 +1,5 @@
 import { Button, TextField } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { signUp, passShow, pass_icon } from "./style.module.css";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -12,10 +12,38 @@ function SignUp() {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+
+  const validate = () => {
+    const errors = {};
+
+    if (userInfo.name.length < 3) {
+      errors.name = "Name must be at least 3 characters long";
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(userInfo.email)) {
+      errors.email = "Email is not valid";
+    }
+    if (userInfo.password.length < 6) {
+      errors.password = "Password must be at least 6 characters long";
+    }
+    try {
+      new URL(userInfo.avatar);
+    } catch (_) {
+      errors.avatar = "Avatar must be a valid URL";
+    }
+
+    return errors;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
     const users = JSON.parse(localStorage.getItem("users")) ?? [];
     setUserInfo((...prev) => ({
       ...prev,
@@ -58,9 +86,11 @@ function SignUp() {
             setUserInfo((prev) => ({ ...prev, name: e.target.value.trim() }))
           }
           required
+          error={!!errors.name}
+          helperText={errors.name}
         />
         <TextField
-          type="link"
+          type="url"
           id="avatar"
           size="small"
           label="Avatar"
@@ -70,6 +100,8 @@ function SignUp() {
             setUserInfo((prev) => ({ ...prev, avatar: e.target.value.trim() }))
           }
           required
+          error={!!errors.avatar}
+          helperText={errors.avatar}
         />
         <TextField
           type="email"
@@ -84,6 +116,8 @@ function SignUp() {
             }))
           }
           required
+          error={!!errors.email}
+          helperText={errors.email}
         />
         <div className={passShow}>
           <TextField
@@ -99,6 +133,8 @@ function SignUp() {
               }))
             }
             required
+            error={!!errors.password}
+            helperText={errors.password}
           />
           {showPassword ? (
             <FaEye
