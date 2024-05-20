@@ -16,7 +16,9 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { product, product_item, product_list } from "./style.module.css";
+import { colors } from "@mui/material";
 
+const date = new Date();
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -74,7 +76,7 @@ function Product() {
                       </IconButton>
                     }
                     title={title.slice(0, 30)}
-                    subheader="September 14, 2016"
+                    subheader={date.toLocaleDateString()}
                   />
                   <CardMedia
                     component="img"
@@ -89,7 +91,7 @@ function Product() {
                   </CardContent>
                   <CardActions disableSpacing>
                     <IconButton aria-label="add to favorites">
-                      <FavoriteIcon />
+                      <FavoriteIcon style={{ color: "red" }} />
                     </IconButton>
                     <IconButton aria-label="share">
                       <ShareIcon />

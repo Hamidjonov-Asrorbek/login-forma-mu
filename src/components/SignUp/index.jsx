@@ -1,7 +1,8 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { signUp } from "./style.module.css";
+import { signUp, passShow, pass_icon } from "./style.module.css";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ function SignUp() {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,20 +85,33 @@ function SignUp() {
           }
           required
         />
-        <TextField
-          type="password"
-          id="password"
-          label="Password"
-          variant="outlined"
-          value={userInfo.password}
-          onChange={(e) =>
-            setUserInfo((prev) => ({
-              ...prev,
-              password: e.target.value.trim(),
-            }))
-          }
-          required
-        />
+        <div className={passShow}>
+          <TextField
+            type={showPassword ? "text" : "password"}
+            id="password"
+            label="Password"
+            variant="outlined"
+            value={userInfo.password}
+            onChange={(e) =>
+              setUserInfo((prev) => ({
+                ...prev,
+                password: e.target.value.trim(),
+              }))
+            }
+            required
+          />
+          {showPassword ? (
+            <FaEye
+              onClick={() => setShowPassword((prev) => !prev)}
+              className={pass_icon}
+            />
+          ) : (
+            <FaEyeSlash
+              onClick={() => setShowPassword((prev) => !prev)}
+              className={pass_icon}
+            />
+          )}
+        </div>
         <Button type="submit" variant="contained">
           Submit
         </Button>

@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
+import { tooltip } from "./style.module.css";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Log out"];
@@ -134,10 +135,11 @@ function Header() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Open settings" className={tooltip}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt={user.name} src={user.avatar} />
               </IconButton>
+              <Typography textAlign="center">{user.name}</Typography>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}

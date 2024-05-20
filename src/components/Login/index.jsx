@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
-import { login } from "./style.module.css";
+import { login, passShow, pass_icon } from "./style.module.css";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -35,17 +37,30 @@ function Login() {
           value={userInfo.email}
           onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
         />
-        <TextField
-          type="password"
-          id="outlined-basic"
-          label="Password"
-          variant="outlined"
-          required
-          value={userInfo.password}
-          onChange={(e) =>
-            setUserInfo({ ...userInfo, password: e.target.value })
-          }
-        />
+        <div className={passShow}>
+          <TextField
+            type={showPassword ? "text" : "password"}
+            id="outlined-basic"
+            label="Password"
+            variant="outlined"
+            required
+            value={userInfo.password}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, password: e.target.value })
+            }
+          />
+          {showPassword ? (
+            <FaEye
+              onClick={() => setShowPassword((prev) => !prev)}
+              className={pass_icon}
+            />
+          ) : (
+            <FaEyeSlash
+              onClick={() => setShowPassword((prev) => !prev)}
+              className={pass_icon}
+            />
+          )}
+        </div>
         <Button type="submit" variant="contained">
           Submit
         </Button>
